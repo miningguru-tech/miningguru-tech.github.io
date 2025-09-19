@@ -1,0 +1,51 @@
+// BitcoinMiningSimulator.jsx import React, { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input"; import { Label } from "@/components/ui/label";
+
+const rigs = [ { id: 1, name: "AntMiner S19 Pro", hashRate: 110 }, { id: 2, name: "WhatsMiner M30S++", hashRate: 112 }, { id: 3, name: "AvalonMiner 1246", hashRate: 90 }, ];
+
+const BTC_PRICE_USDT = 68000; // Simulated BTC price in USDT (can be dynamic)
+
+export default function BitcoinMiningSimulator() { const [selectedRig, setSelectedRig] = useState(rigs[0]); const [usdtAmount, setUsdtAmount] = useState(0); const [estimatedBtc, setEstimatedBtc] = useState(0);
+
+const calculateBTC = () => { const btcMined = (usdtAmount / BTC_PRICE_USDT) * (selectedRig.hashRate / 100); setEstimatedBtc(btcMined); };
+
+const placeOrder = () => { alert( Order placed!\nRig: ${selectedRig.name}\nUSDT: ${usdtAmount}\nAdmin will contact you via email. ); // In real deployment, send email to admin here };
+
+return ( <div className="p-6 space-y-6"> <h1 className="text-2xl font-bold">Bitcoin Mining Simulator</h1>
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {rigs.map((rig) => (
+      <Card
+        key={rig.id}
+        className={`cursor-pointer ${
+          selectedRig.id === rig.id ? "border-blue-500 border-2" : ""
+        }`}
+        onClick={() => setSelectedRig(rig)}
+      >
+        <CardContent className="p-4">
+          <h2 className="font-semibold">{rig.name}</h2>
+          <p>{rig.hashRate} TH/s</p>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+
+  <div className="space-y-2">
+    <Label htmlFor="usdt">Deposit Amount (USDT)</Label>
+    <Input
+      id="usdt"
+      type="number"
+      value={usdtAmount}
+      onChange={(e) => setUsdtAmount(e.target.value)}
+    />
+    <Button onClick={calculateBTC}>Estimate BTC</Button>
+  </div>
+
+  <div>
+    <h3 className="text-xl">Estimated BTC Output:</h3>
+    <p>{estimatedBtc.toFixed(8)} BTC</p>
+  </div>
+
+  <Button onClick={placeOrder}>Place Order</Button>
+</div>
+
+); }
