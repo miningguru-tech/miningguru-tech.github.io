@@ -1,51 +1,133 @@
-// BitcoinMiningSimulator.jsx import React, { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input"; import { Label } from "@/components/ui/label";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RU-Tech Crypto Simulator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+    header {
+      background: #161b22;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    nav {
+      background: #21262d;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: #58a6ff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .crypto-box {
+      background: #161b22;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    .crypto-box h2 {
+      margin-top: 0;
+      color: #58a6ff;
+    }
+    .price {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #30363d;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #161b22;
+      margin-top: 30px;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
 
-const rigs = [ { id: 1, name: "AntMiner S19 Pro", hashRate: 110 }, { id: 2, name: "WhatsMiner M30S++", hashRate: 112 }, { id: 3, name: "AvalonMiner 1246", hashRate: 90 }, ];
+  <header>
+    <h1>RU-Tech Crypto Simulator 🚀</h1>
+    <p>Track & simulate crypto prices in real-time</p>
+  </header>
 
-const BTC_PRICE_USDT = 68000; // Simulated BTC price in USDT (can be dynamic)
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="history.html">Trade History</a>
+  </nav>
 
-export default function BitcoinMiningSimulator() { const [selectedRig, setSelectedRig] = useState(rigs[0]); const [usdtAmount, setUsdtAmount] = useState(0); const [estimatedBtc, setEstimatedBtc] = useState(0);
+  <main>
+    <div class="crypto-box">
+      <h2>Bitcoin (BTC)</h2>
+      <p class="price" id="btc-price">$0.00</p>
+    </div>
 
-const calculateBTC = () => { const btcMined = (usdtAmount / BTC_PRICE_USDT) * (selectedRig.hashRate / 100); setEstimatedBtc(btcMined); };
+    <div class="crypto-box">
+      <h2>Ethereum (ETH)</h2>
+      <p class="price" id="eth-price">$0.00</p>
+    </div>
 
-const placeOrder = () => { alert( Order placed!\nRig: ${selectedRig.name}\nUSDT: ${usdtAmount}\nAdmin will contact you via email. ); // In real deployment, send email to admin here };
+    <div class="crypto-box">
+      <h2>DogeCoin (DOGE)</h2>
+      <p class="price" id="doge-price">$0.00</p>
+    </div>
+  </main>
 
-return ( <div className="p-6 space-y-6"> <h1 className="text-2xl font-bold">Bitcoin Mining Simulator</h1>
+  <footer>
+    <p>&copy; 2025 RU-Tech | Crypto Simulator</p>
+  </footer>
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {rigs.map((rig) => (
-      <Card
-        key={rig.id}
-        className={`cursor-pointer ${
-          selectedRig.id === rig.id ? "border-blue-500 border-2" : ""
-        }`}
-        onClick={() => setSelectedRig(rig)}
-      >
-        <CardContent className="p-4">
-          <h2 className="font-semibold">{rig.name}</h2>
-          <p>{rig.hashRate} TH/s</p>
-        </CardContent>
-      </Card>
-    ))}
-  </div>
+  <script>
+    // Function to generate random crypto prices
+    function randomPrice(min, max) {
+      return (Math.random() * (max - min) + min).toFixed(2);
+    }
 
-  <div className="space-y-2">
-    <Label htmlFor="usdt">Deposit Amount (USDT)</Label>
-    <Input
-      id="usdt"
-      type="number"
-      value={usdtAmount}
-      onChange={(e) => setUsdtAmount(e.target.value)}
-    />
-    <Button onClick={calculateBTC}>Estimate BTC</Button>
-  </div>
+    function updatePrices() {
+      document.getElementById("btc-price").innerText = "$" + randomPrice(25000, 70000);
+      document.getElementById("eth-price").innerText = "$" + randomPrice(1500, 5000);
+      document.getElementById("doge-price").innerText = "$" + randomPrice(0.05, 0.5);
+    }
 
-  <div>
-    <h3 className="text-xl">Estimated BTC Output:</h3>
-    <p>{estimatedBtc.toFixed(8)} BTC</p>
-  </div>
+    // Update every 3 seconds
+    setInterval(updatePrices, 3000);
 
-  <Button onClick={placeOrder}>Place Order</Button>
-</div>
+    // Run once when the page loads
+    updatePrices();
+  </script>
 
-); }
+</body>
+</html>
